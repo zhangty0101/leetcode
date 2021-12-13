@@ -15,17 +15,17 @@ import java.util.List;
 public class Solution {
     public List<String> restoreIpAddresses(String s) {
         List<String> res = new ArrayList<>();
-        for(int i=0; i<3; i++) {
+        for(int i=0; i<3 && i<s.length(); i++) {
             String s1 = s.substring(0, i+1);
             if (!checkIp(s1)) {
                 break;
             }
-            for(int j=i+1; j<i+4; j++) {
+            for(int j=i+1; j<i+4 && j < s.length(); j++) {
                 String s2 = s.substring(i+1, j+1);
                 if(!checkIp(s2)) {
                     break;
                 }
-                for(int k=j+1; k<j+4; k++) {
+                for(int k=j+1; k<j+4 && k+1 < s.length(); k++) {
                     String s3 = s.substring(j+1, k+1);
                     String s4 = s.substring(k+1);
                     if(checkIp(s3) && checkIp(s4)) {

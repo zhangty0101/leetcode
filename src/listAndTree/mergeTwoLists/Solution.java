@@ -1,15 +1,14 @@
 package listAndTree.mergeTwoLists;
 
-public class Solution {
-
-    public static class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) {
-            val = x;
-        }
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) {
+        val = x;
     }
+}
 
+public class Solution {
     /**
      * 循环
      * @param l1
@@ -27,7 +26,6 @@ public class Solution {
                 node.next = new ListNode(l2.val);
                 l2 = l2.next;
             }
-
             node = node.next;
         }
         if (l1 != null) {

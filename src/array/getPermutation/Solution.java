@@ -1,6 +1,7 @@
 package array.getPermutation;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -38,24 +39,23 @@ public class Solution {
      * @return
      */
     public String getPermutation(int n, int k) {
-        int factorial = 1;
+        k--;
+
+        int[] factorial = new int[n];
+        factorial[0] = 1;
         for (int i=1; i<n; i++) {
-            factorial *= i;
+            factorial[i] = factorial[i-1] * i;
         }
-        List<Integer> list = new ArrayList<>();
+        List<Integer> list = new LinkedList<>();
         for (int i=1; i<=n; i++) {
             list.add(i);
         }
-        k--;
+
         StringBuilder sb = new StringBuilder();
         for(int i=n-1; i>=0; i--) {
-            int index = k / factorial;
-            sb.append(list.get(index));
-            list.remove(index);
-            k %= factorial;
-            if (i != 0) {
-                factorial /= i;
-            }
+            int index = k / factorial[i];
+            sb.append(list.remove(index));
+            k %= factorial[i];
         }
         return sb.toString();
     }

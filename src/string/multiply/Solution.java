@@ -20,33 +20,33 @@ package string.multiply;
  */
 
 public class Solution {
+    /**
+     * 乘数 num1 位数为 M，被乘数 num2 位数为 N， num1 x num2 结果 res 最大总位数为 M+N
+     * num1[i] x num2[j] 的结果为 tmp(位数为两位，"0x","xy"的形式)，其第一位位于 res[i+j]，第二位位于 res[i+j+1]。
+     *
+     * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+     * @param num1
+     * @param num2
+     * @return
+     */
     public String multiply(String num1, String num2) {
         if (num1.length() == 0 || num2.length() == 0 || num1.equals("0") || num2.equals("0")) {
             return "0";
         }
-        int len1 = num1.length();
-        int len2 = num2.length();
-        int[] res = new int[len1 + len2];
-        for (int i = len1 - 1; i >= 0; i--) {
-            for (int j = len2 - 1; j >= 0; j--) {
-                res[len1 - 1 - i + len2 - 1 - j] += (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
-            }
-        }
-        for (int i = 0; i < res.length; i++) {
-            if (res[i] >= 10) {
-                res[i + 1] += res[i] / 10;
-                res[i] = res[i] % 10;
+        int[] res = new int[num1.length() + num2.length()];
+        for (int i = num1.length() - 1; i >= 0; i--) {
+            int x = num1.charAt(i) - '0';
+            for (int j = num2.length() - 1; j >= 0; j--) {
+                int y = num2.charAt(j) - '0';
+                int z = x * y + res[i + j + 1];
+                res[i + j + 1] = z % 10;
+                res[i + j] += z / 10;
             }
         }
         StringBuilder sb = new StringBuilder();
-        boolean start = false;
-        for (int i = res.length - 1; i >= 0; i--) {
-            if (res[i] != 0) {
-                start = true;
-            }
-            if (start) {
-                sb.append(res[i]);
-            }
+        for (int i=0; i<res.length; i++) {
+            if (i==0 && res[i]==0) continue;
+            sb.append(res[i]);
         }
         return sb.toString();
     }

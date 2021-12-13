@@ -2,6 +2,7 @@ package array.longestConsecutive;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -68,6 +69,30 @@ public class Solution {
                     map.put(num + right, left + right + 1);
                 }
                 res = Math.max(left + right + 1, res);
+            }
+        }
+        return res;
+    }
+
+    public int longestConsecutive3(int[] nums) {
+        if (nums.length <= 1) {
+            return nums.length;
+        }
+        HashSet<Integer> set = new HashSet();
+        for (int num: nums) {
+            set.add(num);
+        }
+
+        int res = 0;
+        for (int num: set) {
+            if (!set.contains(num - 1)) {
+                int cur = num;
+                int curLen = 1;
+                while (set.contains(cur + 1)) {
+                    cur += 1;
+                    curLen++;
+                }
+                res = Math.max(curLen, res);
             }
         }
         return res;

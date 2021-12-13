@@ -1,5 +1,8 @@
 package string.lengthOfLongestSubstring;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
  * <p>
@@ -50,6 +53,35 @@ public class Solution {
     }
 
     /**
+     * 假设不重复的子串开始和结尾下标为 i, j
+     * 如果 s[i]-s[j+1] 是重复的字符串，则说明 s[j+1] 与 s[i]-s[j] 中的字符有重复，找出重复的位置k, 则 s[k+1] - s[j+1] 肯定是非重复的
+     * 利用 map 来检查是否有重复，key是字符，value 是下标，
+     * 如果 map[s[j+1]] 存在，且value > i, 说明 s[j+1] 在 s[i]-s[j] 中已存在，且原下标是 value
+     * 此时直接  i=value+1， 且将 map[key] 的value 更新为 j+1;
+     *
+     * @param s
+     * @return
+     */
+    public static int lengthOfLongestSubstring3(String s) {
+        if (s.length() <= 1) {
+            return s.length();
+        }
+        int i = 0;
+        int j = 0;
+        int len = 1;
+        Map<Character, Integer> map = new HashMap<>();
+        while (j < s.length()) {
+            if (map.containsKey(s.charAt(j)) && map.get(s.charAt(j)) >= i) {
+                i = map.get(s.charAt(j)) + 1;
+            }
+            map.put(s.charAt(j), j);
+            len = Math.max(len, j - i + 1);
+            j++;
+        }
+        return len;
+    }
+
+    /**
      * 维护一个数组dp[]，dp[i]表示到以第i个字符结尾的不包含重复数组的子字符串的最大长度。
      * （我们并不保存最大不重复子字符串，只是存储其长度方便后续比较）
      *   状态转移：
@@ -67,18 +99,18 @@ public class Solution {
         int[] dp = new int[s.length()];
         dp[0] = 1;
         int res = 1;
-        for (int i=1; i<dp.length; i++){
+        for (int i = 1; i < dp.length; i++) {
             String subStr = s.substring(0, i);
             char x = s.charAt(i);
             if (subStr.contains(x + "")) {
-                int d = i - s.lastIndexOf(x, i-1);
-                if (d > dp[i-1]) {
-                    dp[i] = dp[i-1] + 1;
+                int d = i - s.lastIndexOf(x, i - 1);
+                if (d > dp[i - 1]) {
+                    dp[i] = dp[i - 1] + 1;
                 } else {
                     dp[i] = d;
                 }
             } else {
-                dp[i] = dp[i-1] + 1;
+                dp[i] = dp[i - 1] + 1;
             }
             res = Math.max(res, dp[i]);
         }
@@ -86,8 +118,11 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        String s = "jahdsjaldjklasdaldkj";
+        String s = "abcabcbb";
         Solution solution = new Solution();
-        System.out.println(solution.lengthOfLongestSubstring2(s));
+        System.out.println(Solution.lengthOfLongestSubstring3("abcabcbb"));
+        System.out.println(Solution.lengthOfLongestSubstring3("pwwkew"));
+        System.out.println(Solution.lengthOfLongestSubstring3("bbbbb"));
+        System.out.println(Solution.lengthOfLongestSubstring3("ab"));
     }
 }

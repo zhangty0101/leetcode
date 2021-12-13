@@ -92,11 +92,11 @@ public class Solution {
         }
 
         while (len1 >= 0) {
-            l1 = l1.next;
-            l2 = l2.next;
             if (l1 == l2) {
                 return l1;
             }
+            l1 = l1.next;
+            l2 = l2.next;
             len1--;
         }
 

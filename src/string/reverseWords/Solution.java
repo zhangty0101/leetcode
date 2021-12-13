@@ -1,5 +1,9 @@
 package string.reverseWords;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * 给定一个字符串，逐个翻转字符串中的每个单词。
  * <p>
@@ -39,15 +43,9 @@ public class Solution {
      * @return
      */
     public String reverseWords(String s) {
-        String[] strs = s.trim().split(" ");
-        StringBuilder sb = new StringBuilder();
-        for (int i = strs.length - 1; i >= 0; i--) {
-            sb.append(strs[i]);
-            if (i != 0) {
-                sb.append(" ");
-            }
-        }
-        return sb.toString();
+        List<String> list = Arrays.asList(s.trim().split("\\s+"));
+        Collections.reverse(list);
+        return String.join(" ", list);
     }
 
     public static void main(String[] args) {

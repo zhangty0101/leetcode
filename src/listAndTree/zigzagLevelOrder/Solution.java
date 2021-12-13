@@ -24,8 +24,11 @@ public class Solution {
      * @return
      */
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        LinkedList<Integer> list = new LinkedList<>();
         List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        LinkedList<Integer> list = new LinkedList<>();
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
         int curNum = 1;

@@ -15,44 +15,43 @@ package array.trap;
 public class Solution {
 
     /**
-     * 双指针，如果右指针一直往前走，如果遇到比左指针大的值，则停下，计算两个指针之间的雨水；
-     * 如果一直没有比右指针大，则左右指针同时指向左指针的下一位
+     对于下标 i，下雨后水能到达的最大高度等于下标 i 两边的最大高度的最小值，
+     下标 i 处能接的雨水量等于下标 i 处的水能到达的最大高度减去 height[i]。
      *
      * @param height
      * @return
      */
     public int trap(int[] height) {
-        if (height.length <= 2) {
+        int n = height.length;
+        if (n <= 2) {
             return 0;
         }
-        int left = 0;
-        int right = 1;
-        int midSum = 0;
-        int res = 0;
-        while (left < height.length - 1) {
-            if (right - left > 1) {
-                midSum += height[right - 1];
-            }
-            if (height[right] >= height[left]) {
-                res += (right - left - 1) * height[left] - midSum;
-                left = right;
-                right = left + 1;
-                midSum = 0;
-            } else {
-                right++;
-            }
-            if (right == height.length - 1) {
-                left++;
-                right = left + 1;
-                midSum = 0;
-            }
+
+        // 1. 计算每个下标左边的最大值
+        int[] leftMax = new int[n];
+        leftMax[0] = height[0];
+        for (int i=1; i<n; i++) {
+            leftMax[i] = Math.max(leftMax[i-1], height[i]);
         }
-        return res;
+
+        // 2. 计算每个下标右边的最大值
+        int[] rightMax = new int[n];
+        rightMax[n-1] = height[n-1];
+        for (int i=n-2; i>=0; i--) {
+            rightMax[i] = Math.max(rightMax[i+1], height[i]);
+        }
+
+        // 3. 计算每个下标能装的雨水
+        int ans = 0;
+        for (int i=0; i<n; i++) {
+            ans += Math.min(leftMax[i], rightMax[i]) - height[i];
+        }
+        return ans;
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        int[] height = new int[]{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
+        int[] height = new int[]{4,2,0,3,2,5};
         System.out.println(solution.trap(height));
     }
 }

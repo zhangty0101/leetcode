@@ -18,7 +18,7 @@ package dynamic.maximalSquare;
 public class Solution {
 
     /**
-     * 动态规划 dp[i][j]表示以i，j为右下角的正方形的最大变长
+     * 动态规划 dp[i][j]表示以i，j为右下角的正方形的最大边长
      * dp[i][j] = min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]) + 1
      * @param matrix
      * @return

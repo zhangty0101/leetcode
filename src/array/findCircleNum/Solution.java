@@ -32,31 +32,29 @@ package array.findCircleNum;
 public class Solution {
 
     /**
-     * 遍历，如果M[i][j]=1, 返回1并将其朋友圈全部归零，继续往下
-     *
+     * 遍历所有同学，对于每个同学，如果尚未被访问过，则从该同学开始深度优先搜索，
+     * 通过矩阵 isConnected 得到与该同学是朋友的同学有哪些，这些同学属于同一个朋友圈，然后对这些同学继续深度优先搜索，直到同一个朋友圈的同学都被访问到。
      * @param M
      * @return
      */
     public int findCircleNum(int[][] M) {
-        int res = 0;
+        int circleNum = 0;
+        boolean[] visited = new boolean[M.length];
         for (int i = 0; i < M.length; i++) {
-            for (int j = 0; j < M[i].length; j++) {
-                if (M[i][j] == 1) {
-                    res++;
-                    resetCircle(i, j, M);
-                }
+            if (!visited[i]) {
+                dfs(i, M, visited);
+                circleNum++;
             }
         }
-        return res;
+        return circleNum;
     }
 
-    public void resetCircle(int i, int j, int[][] M) {
-        if (i >= 0 && i < M.length && j >= 0 && j < M.length && M[i][j] == 1) {
-            M[i][j] = 0;
-            resetCircle(i - 1, j, M);
-            resetCircle(i + 1, j, M);
-            resetCircle(i, j - 1, M);
-            resetCircle(i, j + 1, M);
+    public void dfs(int i , int[][] M, boolean[] visited) {
+        for (int j=0; j<M.length; j++) {
+            if (!visited[j] && M[i][j] == 1) {
+                visited[j] = true;
+                dfs(j, M, visited);
+            }
         }
     }
 

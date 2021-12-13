@@ -23,8 +23,9 @@ package dynamic.maxProfit;
 public class Solution {
 
     /**
-     * buy 表示 当前或之前买入的最小成本, buy = min(buy, price[i])
-     * sell 表示当前或之前卖出的最大收益, sell = max(sell, price[i] - buy)
+     * 第 i 天 交易获取的利益为：prices[i] - buy， 其中buy为之前买入的最小成本
+     * buy = min(buy, price[i])
+     * maxSell = max(sell, price[i] - buy)
      * @param prices
      * @return
      */
@@ -32,11 +33,11 @@ public class Solution {
         if (prices.length <= 1) {
             return 0;
         }
-        int buy = -prices[0];
+        int buy = prices[0];
         int sell = 0;
         for (int i=1; i<prices.length; i++) {
-            buy = Math.max(buy, -prices[i]);
-            sell = Math.max(sell, prices[i] + buy);
+            buy = Math.min(buy, prices[i]);
+            sell = Math.max(sell, prices[i] - buy);
         }
         return sell;
     }
